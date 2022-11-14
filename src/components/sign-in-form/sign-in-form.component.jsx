@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import './sign-in-form.style.scss';
 import {
 	createAuthUserWithEmailAndPassword,
@@ -8,6 +8,7 @@ import {
 } from '../../utils/firebase/utils.firebase';
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component';
+import { UserContext } from '../../contexts/user.context';
 
 const deafultFormFields = {
 	email: '',
@@ -16,7 +17,7 @@ const deafultFormFields = {
 const SignInForm = () => {
 	const [formFields, setFormFields] = useState(deafultFormFields);
 	const { email, password } = formFields;
-
+	const { setCurrentUser } = useContext(UserContext);
 	console.log(formFields);
 
 	const signInWithGoogle = async () => {
@@ -37,6 +38,8 @@ const SignInForm = () => {
 				password
 			);
 			console.log(response);
+			const { user } = response;
+			setCurrentUser(user);
 			resetFormFields();
 		} catch (error) {
 			switch (error.code) {
