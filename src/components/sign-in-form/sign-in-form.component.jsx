@@ -17,13 +17,14 @@ const deafultFormFields = {
 const SignInForm = () => {
 	const [formFields, setFormFields] = useState(deafultFormFields);
 	const { email, password } = formFields;
-	const { setCurrentUser } = useContext(UserContext);
-	console.log(formFields);
+	//const { setCurrentUser } = useContext(UserContext);
+	console.log('SignInForm:formFields:', formFields);
 
 	const signInWithGoogle = async () => {
 		const response = await signInWithGooglePopup();
-		console.log(response);
-		await createUserDocumentFromAuth(response.user);
+		console.log('SignInForm:signInWithGoogle:', response);
+		//setCurrentUser(response.user);
+		//await createUserDocumentFromAuth(response.user);
 	};
 
 	const resetFormFields = () => {
@@ -37,9 +38,9 @@ const SignInForm = () => {
 				email,
 				password
 			);
-			console.log(response);
+			console.log('SignInForm:handleSubmit:response:', response);
 			const { user } = response;
-			setCurrentUser(user);
+			//setCurrentUser(user);
 			resetFormFields();
 		} catch (error) {
 			switch (error.code) {
@@ -50,7 +51,7 @@ const SignInForm = () => {
 					alert('incorrect password');
 					break;
 				default:
-					console.log(error);
+					console.log('SignInForm:handleSubmit:error:', error);
 			}
 		}
 	};

@@ -8,6 +8,7 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	signOut,
+	onAuthStateChanged,
 } from 'firebase/auth';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -43,10 +44,19 @@ export const createUserDocumentFromAuth = async (
 ) => {
 	if (!userAuth) return;
 	const userDocRef = doc(db, 'users', userAuth.uid);
-	console.log(userDocRef);
+	console.log(
+		'utils.firebase.js:createUserDocumentFromAuth:userDocRef:',
+		userDocRef
+	);
 	const userSnapshot = await getDoc(userDocRef);
-	console.log(userSnapshot);
-	console.log(userSnapshot.exists());
+	console.log(
+		'utils.firebase.js:createUserDocumentFromAuth:userSnapshot:',
+		userSnapshot
+	);
+	console.log(
+		'utils.firebase.js:createUserDocumentFromAuth:userSnapshot.exists:',
+		userSnapshot.exists()
+	);
 
 	if (!userSnapshot.exists()) {
 		const { displayName, email } = userAuth;
@@ -54,7 +64,10 @@ export const createUserDocumentFromAuth = async (
 		try {
 			setDoc(userDocRef, { displayName, email, createAt, ...additionalInfo });
 		} catch (error) {
-			console.log('error creating user document', error.message);
+			console.log(
+				'utils.firebase.js:createUserDocumentFromAuth:error creating user document',
+				error.message
+			);
 		}
 	}
 
@@ -74,3 +87,6 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 };
 
 export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+	onAuthStateChanged(auth, callback);
