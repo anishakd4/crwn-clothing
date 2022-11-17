@@ -1,14 +1,11 @@
-import { useContext, useState } from 'react';
-import './sign-in-form.style.scss';
+import { useState } from 'react';
 import {
-	createAuthUserWithEmailAndPassword,
-	createUserDocumentFromAuth,
 	signInAuthUserWithEmailAndPassword,
 	signInWithGooglePopup,
 } from '../../utils/firebase/utils.firebase';
-import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component';
-import { UserContext } from '../../contexts/user.context';
+import FormInput from '../form-input/form-input.component';
+import './sign-in-form.style.scss';
 
 const deafultFormFields = {
 	email: '',
@@ -18,11 +15,9 @@ const SignInForm = () => {
 	const [formFields, setFormFields] = useState(deafultFormFields);
 	const { email, password } = formFields;
 	//const { setCurrentUser } = useContext(UserContext);
-	console.log('SignInForm:formFields:', formFields);
 
 	const signInWithGoogle = async () => {
 		const response = await signInWithGooglePopup();
-		console.log('SignInForm:signInWithGoogle:', response);
 		//setCurrentUser(response.user);
 		//await createUserDocumentFromAuth(response.user);
 	};
@@ -38,7 +33,6 @@ const SignInForm = () => {
 				email,
 				password
 			);
-			console.log('SignInForm:handleSubmit:response:', response);
 			const { user } = response;
 			//setCurrentUser(user);
 			resetFormFields();
